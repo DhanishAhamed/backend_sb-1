@@ -58,5 +58,17 @@ class Timetable(db.Model):
 def hello_world():
     return "<p>Hello, World!</p>"
 
+@app.route("/login", methods=["POST"])
+def login():
+    data = request.get_json()
+    username = data.get("username")
+    password = data.get("password")
+
+    user = User.query.filter_by(username=username).first()
+    if user and user.password == password:
+        return "Access granted", 200
+    else:
+        return "Access denied", 401
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0')
